@@ -1,0 +1,27 @@
+<ion-view class="red" cache-view="false">
+    <ion-nav-title>
+        {{vm.playlist.title}}
+    </ion-nav-title>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon ion-android-more-vertical" ng-click="vm.showActions()"></button>
+    </ion-nav-buttons>
+    <ion-content>
+        
+        <ion-list show-delete="vm.isEditMode" ng-cloak>
+            <ion-item ng-repeat="video in vm.playlistItems" class="item-remove-animate">
+
+                <videocard video="video" remove-video="vm.removeVideo(video, $index)" play-video="vm.playVideo(video)"></videocard>
+
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+    <ion-footer-bar class="bar-assertive" align-title="center">
+        <a ui-sref="playlist.list" class="button button-icon ion-arrow-return-left"> Return</a>
+        <div class="title">
+           &nbsp;
+           <!-- <a ng-href ng-click="vm.showActions()" class="button button-icon ion-android-more-vertical"></a> -->
+        </div>
+        <a ui-sref="playlist.add({playlistId:vm.playlistId})" class="button button-icon ion-plus"> Add Track</a>
+    </ion-footer-bar>
+</ion-view>

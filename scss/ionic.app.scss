@@ -1,0 +1,11 @@
+$assertive:                       #e62118 !default;
+$more_assertive:                  #bc1a15 !default;
+$dark:                            #000 !default;
+
+// The path for our ionicons font files, relative to the built CSS in www/css
+$ionicons-font-path: "../lib/ionic/fonts" !default;
+
+// Include all of Ionic
+@import "www/lib/ionic/scss/ionic";
+
+@import "_sw-youtube";

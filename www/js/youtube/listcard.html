@@ -1,0 +1,19 @@
+<div class="list card">
+    <div class="item item-avatar">
+        <img ng-src="{{snippet.thumbnails.high.url | dummythumb}}">
+        <h2>{{snippet.title || '&nbsp;'}}</h2>
+        <p>{{snippet.publishedAt| date : 'longDate'}}</p>
+        <div class="card-icon-holder">
+            <i class="icon" ng-class="status.privacyStatus === 'public' ? 'ion-eye' : 'ion-eye-disabled'" title="{{status.privacyStatus | capitalize}}"></i>
+        </div>
+    </div>
+
+    <div class="item item-body">
+        <img class="full-image" ng-src="{{snippet.thumbnails.high.url | dummythumb}}">
+        <div class="button-container">
+            <a class="subdued" ui-sref="playlist.edit({playlistId: id})">Edit</a>                       
+            <a ng-href class="subdued" ng-click="removePlaylist({playlistId: id})">Delete</a>
+            <button  ng-href class="button-icon icon ion-android-share-alt" ng-click="sharePlaylist({playlistId: id})" ng-disabled="status.privacyStatus !== 'public'"></button>
+        </div>
+    </div>
+</div>

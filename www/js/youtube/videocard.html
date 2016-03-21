@@ -1,0 +1,31 @@
+<div class="list card">
+
+    <div class="item item-avatar">
+        <img ng-src="{{video.snippet.thumbnails.high.url | dummythumb}}">
+        <h2>{{video.snippet.title || '&nbsp;'}}</h2>
+    </div>
+
+    <div ng-switch on="isSearch">
+        <div class="animate-switch" ng-switch-when="true">
+            <div class="item item-body">
+                <a ng-href ng-click="selectVideo(video)">
+                    <img class="full-image" ng-src="{{video.snippet.thumbnails.high.url}}">
+                </a>
+                <p class="button-container">                        
+                    <a ng-href class="subdued" ng-click="selectVideo({video: video})">Add</a>
+                    <a ng-href class="subdued" ng-click="playVideo({video: video})">Play</a>
+                </p>
+            </div>
+        </div>
+        <div class="animate-switch" ng-switch-default>
+            <div class="item item-body">
+                <img class="full-image" ng-src="{{video.snippet.thumbnails.high.url}}">
+                <p class="button-container">                        
+                    <a ng-href class="subdued" ng-click="removeVideo({video: video, index: $index})">Delete</a>
+                    <a ng-href class="subdued" ng-click="playVideo({video: video})">Play</a>
+                </p>
+            </div>
+        </div>
+    </div>    
+
+</div>

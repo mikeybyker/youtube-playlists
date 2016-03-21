@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col">
+            <form novalidate class="form m-t-10">
+
+                <div class="list">
+                    <label class="item item-input">
+                        <span class="input-label">Playlist Name</span>
+                        <input type="text" ng-model="vm.userlist.title" placeholder="Playlist Name" required>
+                    </label>
+                    <label class="item item-input">
+                        <span class="input-label">Description</span>
+                        <input type="text" ng-model="vm.userlist.description" placeholder="(optional)">
+                    </label>
+                    <div class="item item-toggle create-toggle">                    
+                        <span class="input-label">{{vm.status.privacyStatus | capitalize}}</span>
+                        <label class="toggle toggle-dark">
+                            <input type="checkbox" ng-click="vm.changeStatus()">
+                            <div class="track">
+                                <div class="handle"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="">
+                        <button type="submit" class="button button-dark button-block" ng-disabled="!vm.userlist.title" ng-click="vm.update(vm.userlist)">Create</button>
+                    </div>
+                </div>
+
+            </form>      
+    </div>
+</div>

@@ -1,0 +1,18 @@
+<ion-view class="red" view-title="YouTube Playlists" cache-view="false">
+    <ion-content class="">
+        <ion-list ng-cloak>
+            <ion-item ng-repeat="playlist in vm.playlists" class="item-remove-animate" on-hold="vm.showActions(playlist)">
+
+                <playlistcard id="{{playlist.id}}" snippet="playlist.snippet" status="playlist.status" remove-playlist="vm.removePlaylist(playlistId)" share-playlist="vm.share(playlistId)"></playlistcard>
+
+            </ion-item>
+        </ion-list>
+    </ion-content>
+    <ion-footer-bar align-title="center" class="bar-assertive">
+        <div class="buttons">
+            <div class="buttons pull-right">
+                <button ng-click="vm.addPlaylist()" class="button button-icon ion-plus"> Add Playlist</button>
+            </div>
+        </div>
+    </ion-footer-bar>
+</ion-view>

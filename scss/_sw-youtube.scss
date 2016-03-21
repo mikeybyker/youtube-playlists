@@ -1,0 +1,317 @@
+// Some super quick styles. I'm no designer so maybe make prettier yourself :-)
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+{
+    display: none !important;
+}
+[ng-click],
+[ui-sref],
+[data-ng-click],
+[x-ng-click] {
+    cursor: pointer;
+}
+body
+{
+    background-color: $assertive;
+}
+.bar-assertive.bar
+{
+    &.bar-header,
+    &.bar-footer
+    {
+        background-color: $more_assertive;
+    }
+}
+#bg
+{
+    position: fixed; 
+    top: -50%; 
+    left: -50%; 
+    width: 200%; 
+    height: 200%; 
+    img.splash
+    {
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        right: 0; 
+        bottom: 0; 
+        margin: auto; 
+        min-width: 50%;
+        min-height: 50%;
+    }
+}
+
+.background-transparent
+{
+    background: transparent;
+}
+.full
+{
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+}
+.flex-center
+{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    img
+    {
+        margin-bottom: 1rem;
+    }
+}
+.fend
+{
+    position: absolute;
+    bottom: 0;
+    display: block;
+    background-position: top;
+    height: 175px;    
+    width: 100%;
+    img
+    {
+        position: absolute;
+        bottom: -5px;
+        left: 10%;
+        width: 85%;
+        max-width: 460px;        
+    }
+}
+.item h2
+{
+    line-height: 23px;  /* ionic is cutting off the bottom of letters... */
+}
+.button-login
+{
+    margin-bottom: 28px;
+}
+/* $grid-responsive-sm-break:        567px !default;  // smaller than landscape phone */
+@media only screen and (max-width: 567px) {
+    .order1
+    {
+        order: 1;
+    }
+    .order2
+    {
+        order: 2;
+    }
+    .row.row-close .col
+    {  
+        margin-bottom: 0;
+    }
+    .row.row-close .col button
+    {  
+        margin-bottom: 0;
+    }
+}
+
+.button.button-assertive:hover
+{
+    color: #000;
+}
+
+.item,
+.item-complex .item-content,
+.item-radio .item-content
+{
+    background-color: transparent;
+}
+.pane.red,
+.view.red,
+.list-inset
+{
+    background-color: $assertive;
+}
+.gallery
+{
+    flex-wrap: wrap;
+}
+.item-complex .item-content,
+.item-radio .item-content
+{
+    padding: 16px;
+}
+.button-container
+{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    .ion-android-share-alt
+    {
+        transform: translateY(-8px);
+        &[disabled]
+        {
+            opacity: 0.3;
+        }
+    }
+}
+
+.popeye-modal-container
+{
+    z-index: 150;
+    .popeye-modal
+    {
+        z-index: 151;
+        padding: 1.5em 0.5em 0.5em;
+        p, h2,h3,h4
+        {
+            margin-bottom: 1rem;
+        }
+        .card
+        {
+            // background-color: $assertive;
+        }
+        a.popeye-close-modal
+        {
+            top: 5px;
+            right: 12px;
+            font-weight: 700;
+            font-size: 2.0rem;
+        }
+    }
+    .popeye-modal.large
+    {
+        width: 90%;
+        min-width: 300px;
+        min-height: 80%;
+       
+    }
+    .popeye-modal.vlarge
+    {
+        width: 95vw;
+        min-height: 95%;
+        height: auto;
+        a.popeye-close-modal
+        {
+            color: #fff;
+        }
+    }
+    .popeye-modal.red
+    {
+        background: $assertive;
+        a.popeye-close-modal
+        {
+            color: #fff;
+        }
+    }
+    .popeye-modal.medium
+    {
+        width: 70%;
+        min-width: 200px;
+        min-height: 50%;
+    }
+}
+
+.popeye-modal-container .popeye-modal.red,
+form.red
+{
+
+    .input-label,
+    .item-toggle,
+    textarea,
+    input[type="text"]
+    {
+        color: #fff;
+    }
+    ::-webkit-input-placeholder
+    {
+        color: #dba3a3;
+    }
+}
+
+.card-icon-holder
+{
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    .icon
+    {
+        font-size: 2rem;
+    }
+}
+
+
+.videoWrapper
+{
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+    iframe
+    {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 100%;
+        max-width: 640px;
+        max-height: 480px;
+    }
+}
+.item-toggle.create-toggle
+{
+    .toggle
+    {
+        top: 18px;
+        left: 214px;
+        z-index: 3;
+    }
+}
+.buttons
+{
+    .item-toggle
+    {
+        border: none;
+        padding-top: 8px;
+        color: #fff;
+        padding-right: 80px;
+        margin-left: 30px;
+        font-size: 17px;
+        label
+        {
+            top: 3px;
+        }
+    }
+}
+.button-subdued
+{
+    color: #888;
+    line-height: 28px;
+    min-height: 30px;
+}
+
+// Quick utils
+// To avoid double selects
+.prevent-clicks
+{
+    pointer-events: none;
+}
+.float-left
+{
+    float: left;
+}
+.float-right
+{
+    float: right;
+}
+.m-t-10
+{
+    margin-top: 10px;
+}
+.m-t-20
+{
+    margin-top: 20px;
+}
+.m-t-40
+{
+    margin-top: 40px;
+}
+.action-sheet .button
+{
+    color: inherit;
+}

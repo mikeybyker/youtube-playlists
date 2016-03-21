@@ -1,0 +1,37 @@
+<ion-view class="red" cache-view="false">
+    <ion-nav-title>
+        Add
+    </ion-nav-title>
+    <ion-content class="padding">
+
+        <form novalidate class="red">
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Track</span>
+                    <input type="text" placeholder="Track" required ng-model="vm.usersearch.track">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Artist</span>
+                    <input type="text" placeholder="Artist (optional)" ng-model="vm.usersearch.artist">
+                </label>
+                <div class="padding">
+                    <button type="submit" class="button button-dark button-block" ng-click="vm.update(vm.usersearch)">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <ion-list ng-cloak>
+            <ion-item ng-repeat="video in vm.results">
+
+                <videocard video="video" play-video="vm.playVideo(video)" select-video="vm.select(video)" is-search="true"></videocard>
+
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+    <ion-footer-bar align-title="left" class="bar-assertive">
+        <div class="buttons">
+            <a ui-sref="playlist.edit({playlistId: vm.playlistId})" class="button button-icon ion-arrow-return-left"> Return</a>
+        </div>
+    </ion-footer-bar>
+</ion-view>
