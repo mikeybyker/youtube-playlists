@@ -2,6 +2,10 @@
   "name": "sw-youtube",
   "version": "0.0.1",
   "description": "sw-youtube: An Angular/Ionic/Cordova app to create, edit and share YouTube playlists.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikeybyker/youtube-playlists.git"
+  },
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
