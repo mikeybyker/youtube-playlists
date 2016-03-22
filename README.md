@@ -35,7 +35,7 @@ ionic emulate android
   - In your app Settings, add Allowed Callback URLs and Allowed Origins (CORS) as needed (localhost with port number for local testing!)
 
 ### Version
-0.0.1
+0.0.2
 
 ##### Add your [auth0](https://auth0.com/) domain and clientID to ** www/js/config-RENAME.js** and rename **config.js**
 

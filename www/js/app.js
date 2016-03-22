@@ -4,7 +4,6 @@
     angular
         .module('sw-youtube', [
             'ionic',
-            'ngResource',
             'sinisterwaltz.youtube',
             'ngCordova',
             'toastr', 
