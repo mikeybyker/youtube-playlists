@@ -4,10 +4,9 @@
     angular
         .module('sw-youtube', [
             'ionic',
-            'ngResource',
             'sinisterwaltz.youtube',
             'ngCordova',
-            'toastr', 
+            'toastr',
             'auth0',
             'angular-storage',
             'angular-jwt',
@@ -48,7 +47,7 @@
                     requiresLogin: true
                 }
             })
-            
+
             .state('playlist.edit',{
                 url: '/playlist/:playlistId',
                 views: {
@@ -139,21 +138,21 @@
 
         $rootScope.$on('$stateChangeStart', stateChangeStart);
 
-        function stateChangeStart(event, toState, toParams, fromState, fromParams, options){ 
+        function stateChangeStart(event, toState, toParams, fromState, fromParams, options){
             // $log.info('stateChangeStart > toState ::: ', toState);
-            // $log.info('stateChangeStart > fromState ::: ', fromState);               
+            // $log.info('stateChangeStart > fromState ::: ', fromState);
             var token = store.get('token');
             if (token) {
                 if (!jwtHelper.isTokenExpired(token)) {
                     if (!auth.isAuthenticated) {
                         auth.authenticate(store.get('profile'), token);
-                    }                        
+                    }
                 } else {
                     // Don't want $state.go here
-                    // as already handled by route protection (requiresLogin: true) 
+                    // as already handled by route protection (requiresLogin: true)
                 }
             }
-            
+
         };
 
         $ionicPlatform.ready(function() {
@@ -170,8 +169,8 @@
             if(window.StatusBar) {
                 StatusBar.styleDefault();
             }
-            
-        });       
+
+        });
     })
 
 }());
