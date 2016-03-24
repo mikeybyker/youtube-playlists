@@ -38,7 +38,7 @@
     }
 
     // Inspired by: http://blog.oxrud.com/posts/creating-youtube-directive/
-    function youtube($window, $document, youTubeService) {
+    function youtube(youTubeService) {
         return {
             restrict: 'E',
             scope: {
