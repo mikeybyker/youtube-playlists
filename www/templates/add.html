@@ -15,7 +15,7 @@
                     <input type="text" placeholder="Artist (optional)" ng-model="vm.usersearch.artist">
                 </label>
                 <div class="padding">
-                    <button type="submit" class="button button-dark button-block" ng-click="vm.update(vm.usersearch)">Search</button>
+                    <button type="submit" class="button button-dark button-block" ng-click="vm.update(vm.usersearch)" ng-disabled="!vm.usersearch.track">Search</button>
                 </div>
             </div>
         </form>
