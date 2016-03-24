@@ -122,7 +122,6 @@
             var access_token = store.get('access_token');
             // $log.info('jwtInterceptorProvider : access_token : ', access_token);
             if (!access_token) {
-                $log.info('!! No access_token');
                 return null;
             }
             return access_token; // can't check for expired (not a JWT)

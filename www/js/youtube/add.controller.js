@@ -64,13 +64,16 @@
             var resolve =  {
                     videoId: function() {
                         return video.id.videoId;
+                    },
+                    videoParams: function() {
+                        return {};
                     }
                 },
                 params = {
                     templateUrl: 'js/youtube/youtube.html',
                     controller: 'YoutubeModalController as vm',
                     resolve: resolve,
-                    modalClass: 'vlarge'
+                    modalClass: 'vlarge red'
                 };
             YouTubeUtils.openModal(params)
                 .closed.then(function() {
