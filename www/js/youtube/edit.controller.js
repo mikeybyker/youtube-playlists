@@ -7,7 +7,8 @@
 
     function EditController($state, $stateParams, $log, $ionicScrollDelegate, auth, store, YoutubeService, Popeye, Utils, YouTubeUtils) {
         var vm = this,
-            playlistId = vm.playlistId = $stateParams.playlistId;
+            playlistId = vm.playlistId = $stateParams.playlistId,
+            videoParams = {controls: 1, modestbranding: 1};
 
         vm.removeVideo = removeVideo;
         vm.changeStatus = changeStatus;
@@ -162,12 +163,16 @@
             var resolve = {
                     videoId: function() {
                         return video.snippet.resourceId.videoId;
+                    },
+                    videoParams: function() {
+                        return videoParams;
                     }
                 },
                 params = {
                     templateUrl: 'js/youtube/youtube.html',
                     controller: 'YoutubeModalController as vm',
-                    resolve: resolve, modalClass: 'vlarge red'
+                    resolve: resolve,
+                    modalClass: 'vlarge red'
                 };
             YouTubeUtils.openModal(params)
                 .closed.then(function() {

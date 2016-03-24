@@ -117,9 +117,10 @@
         }
     }
 
-    function YoutubeModalController($scope, $log, videoId) {
+    function YoutubeModalController($scope, $log, videoId, videoParams) {
         var vm = this;
         vm.videoId = videoId;
+        vm.videoParams = videoParams;
     }
 
     function dummyThumb() {
