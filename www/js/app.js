@@ -13,7 +13,7 @@
             'pathgather.popeye'
         ])
 
-    .config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, toastrConfig, authProvider, authconfig, jwtInterceptorProvider) {
+    .config(function($stateProvider, $urlRouterProvider, $logProvider, $httpProvider, toastrConfig, authProvider, authconfig, jwtInterceptorProvider, jwtOptionsProvider) {
 
         $stateProvider
             .state('login',{
@@ -117,17 +117,29 @@
             $state.go('login');
         });
 
-        // This is adding the GOOGLE ACCESS_TOKEN > Not the AUTH0 JWT
+        // This is adding the AUTH0 JWT
         jwtInterceptorProvider.tokenGetter = function(store,  $log) {
-            var access_token = store.get('access_token');
-            // $log.info('jwtInterceptorProvider : access_token : ', access_token);
-            if (!access_token) {
+            // var access_token = store.get('access_token');
+            var token = store.get('token');
+            // $log.info('jwtInterceptorProvider : token : ', token);
+            if (!token) {
                 return null;
             }
-            return access_token; // can't check for expired (not a JWT)
+            // return access_token; // can't check for expired (not a JWT)
+            return token; // CAN check for expired (IS a JWT)
         }
 
         $httpProvider.interceptors.push('jwtInterceptor');
+
+        // https://github.com/auth0/angular-jwt
+        // says add tokenGetter here : but above is getting called - but not adding it :-|
+        jwtOptionsProvider.config({
+          whiteListedDomains: ['webtask.it.auth0.com', 'googleapis.com', 'localhost']
+          // tokenGetter: ['store', function(store) {
+          //   // Says this is the way - it isn't! Above still is!
+          //   return store.get('token');
+          // }]
+        });
 
     })
 

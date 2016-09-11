@@ -34,7 +34,7 @@
             store.set('profile', profile);
             store.set('token', token);
             store.set('refreshToken', refreshToken);
-            store.set('access_token', profile.identities[0].access_token);
+            // store.set('access_token', profile.identities[0].access_token);
         }
     }
 }());

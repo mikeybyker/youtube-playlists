@@ -1,12 +1,4 @@
 {
-  "name": "sw-youtube",
-  "app_id": "com.sinisterwaltz.youtube",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
-  "watchPatterns": [
-    "www/**/*",
-    "!www/lib/**/*"
-  ]
+  "name": "youtube-playlists",
+  "app_id": ""
 }
