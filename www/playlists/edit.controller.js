@@ -208,6 +208,8 @@
 
 }());
 
+//@todo : strip this controller down...
+
 /*
 // eg. for changing title
 function changeTitle(newTitle){

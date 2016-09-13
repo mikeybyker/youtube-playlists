@@ -14,13 +14,11 @@
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
-
            .state('playlist', {
                 url: '',
                 abstract: true,
                 templateUrl: 'double.html'
             })
-
             .state('playlist.list',{
                 url: '/playlist',
                 views: {
@@ -39,7 +37,6 @@
                     requiresLogin: true
                 }
             })
-
             .state('playlist.edit',{
                 url: '/playlist/:playlistId',
                 views: {
@@ -58,7 +55,6 @@
                     requiresLogin: true
                 }
             })
-
             .state('playlist.add',{
                 url: '/playlist/:playlistId/add',
                 views: {
@@ -79,7 +75,7 @@
             })
 
         // $urlRouterProvider.when('', '/playlist');
-        // $urlRouterProvider.otherwise('/playlist'); // hmmm?
+        // $urlRouterProvider.otherwise('/playlist');
         // https://github.com/angular-ui/ui-router/issues/2183
         // Fix Error: [$rootScope:infdig] 10 $digest() iterations reached. Aborting!
         $urlRouterProvider.otherwise(function($injector, $location){

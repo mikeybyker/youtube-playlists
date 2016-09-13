@@ -38,7 +38,7 @@
             if (!token) {
                 return null;
             }
-            return token; // CAN check for expired (IS a JWT)
+            return token;
         }
 
         $httpProvider.interceptors.push('jwtInterceptor');
