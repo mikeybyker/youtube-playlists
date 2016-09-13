@@ -10,7 +10,7 @@
         $stateProvider
             .state('login',{
                 url: '/login',
-                templateUrl: 'js/login/login.html',
+                templateUrl: 'login/login.html',
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
@@ -25,12 +25,12 @@
                 url: '/playlist',
                 views: {
                     'appContent' :{
-                        templateUrl: 'js/playlists/playlist.html',
+                        templateUrl: 'playlists/playlist.html',
                         controller: 'PlaylistsController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'js/menu/menu.html',
+                        templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }
@@ -44,12 +44,12 @@
                 url: '/playlist/:playlistId',
                 views: {
                     'appContent' :{
-                        templateUrl: 'js/playlists/edit.html',
+                        templateUrl: 'playlists/edit.html',
                         controller: 'EditController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'js/menu/menu.html',
+                        templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }
@@ -63,12 +63,12 @@
                 url: '/playlist/:playlistId/add',
                 views: {
                     'appContent' :{
-                        templateUrl: 'js/playlists/add.html',
+                        templateUrl: 'playlists/add.html',
                         controller: 'AddController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'js/menu/menu.html',
+                        templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }

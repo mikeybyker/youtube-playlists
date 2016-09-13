@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('sinisterwaltz.youtube')    
+        .module('sinisterwaltz.youtube')
         .directive('playlistcard', playlistcard)
         .directive('videocard', videocard)
         .directive('youtube', youtube)
@@ -19,7 +19,7 @@
                 removePlaylist:   '&',
                 sharePlaylist:   '&'
             },
-            templateUrl: 'js/youtube/listcard.html'
+            templateUrl: 'youtube/listcard.html'
         }
     }
 
@@ -33,7 +33,7 @@
                 selectVideo:   '&',
                 isSearch:   '@'
             },
-            templateUrl: 'js/youtube/videocard.html'
+            templateUrl: 'youtube/videocard.html'
         }
     }
 
@@ -51,7 +51,7 @@
             link: function(scope, element, attrs) {
                 var defaults = {
                         showinfo: 0,
-                        rel: 0                        
+                        rel: 0
                     },
                     player,
                     params = angular.extend(defaults, scope.videoParams);
@@ -59,7 +59,7 @@
                 youTubeService
                     .setup()
                     .then(function(){
-                        player = new YT.Player(element.children()[0], {                            
+                        player = new YT.Player(element.children()[0], {
                             height: scope.height,
                             width: scope.width,
                             videoId: scope.videoid,
@@ -79,7 +79,7 @@
         var deferred = $q.defer(),
             initialized = false;
 
-        function init(){            
+        function init(){
             var $pagejs = angular.element($document).find('script'),
                 js = angular
                         .element('<script/>')
