@@ -94,7 +94,7 @@
                     Utils.showSuccess('You the boss, it is no more!', 'Gulp');
                     vm.playlists = response; // maybe happens too quick for youtube api...but still shows deleted.
                 }, function(reason){
-                    $log.info('deletePlaylist Error :(', reason);
+                    // $log.info('deletePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
                 })
                 .finally(function(){
@@ -129,17 +129,16 @@
                 params = YouTubeUtils.getUpdateProps(playlist);
             YoutubeService.updatePlaylist(params, newStatus)
                 .then(function(response){
-                    // $log.info('updatePlaylist :::', response);
                     playlist.status.privacyStatus = response.privacyStatus;
                 }, function(reason){
-                    $log.info('updatePlaylist Error :(', reason);
+                    // $log.info('updatePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
                 });
         }
 
     }
 
-    // addPlaylist modal controller
+    // add Playlist modal controller
     function CreatePlaylistController($scope, $log, YouTubeUtils) {
         var vm = this;
 

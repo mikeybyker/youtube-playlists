@@ -6,6 +6,5 @@ platforms/
 www/lib/
 plugins/
 removed/
-config.js
 youtube_idp_webtask_mine.js
 info.txt

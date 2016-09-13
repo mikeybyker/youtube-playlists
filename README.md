@@ -73,7 +73,7 @@ use
 ```javascript
 https://webtask.it.auth0.com/api/run/wt-you-gmail_com-0/youtube_idp_webtask/call_ext_api
 ```
-##### Add your webtask, plus [Auth0](https://auth0.com/) domain and clientID to **config.js**
+##### Add your webtask, plus [Auth0](https://auth0.com/) domain and clientID to **index.constants.js**
 
 ### Version
 0.5.0

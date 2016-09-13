@@ -2,12 +2,11 @@
     'use strict';
 
     angular
-        .module('sinisterwaltz.youtube', ['sinisterwaltz.youtube.config'])
+        .module('sinisterwaltz.youtube', [])
         .constant('PRIVACY',
             {
                 PUBLIC: 'public',
                 PRIVATE: 'private'
             }
         );
-
 }());
