@@ -166,7 +166,7 @@
                     }
                 },
                 params = {
-                    templateUrl: 'js/youtube/youtube.html',
+                    templateUrl: 'youtube/youtube.html',
                     controller: 'YoutubeModalController as vm',
                     resolve: resolve,
                     modalClass: 'vlarge red'

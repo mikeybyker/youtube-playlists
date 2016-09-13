@@ -20,7 +20,7 @@
 
         function confirmPopup(id){
             return Popeye.openModal({
-                    templateUrl: 'js/utilities/confirm.html',
+                    templateUrl: 'utilities/confirm.html',
                     controller: 'ConfirmModalController as vm',
                     modalClass: 'medium',
                     resolve: {

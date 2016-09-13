@@ -45,9 +45,9 @@
 
         function addPlaylist(){
             var params = {
-                    templateUrl: 'js/playlists/create.html',
+                    templateUrl: 'playlists/create.html',
                     controller: 'CreatePlaylistController as vm',
-                    modalClass: 'medium red'
+                    modalClass: 'medium'
                 };
             YouTubeUtils.openModal(params)
                 .closed.then(function(config) {

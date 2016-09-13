@@ -1,6 +1,6 @@
 {
   "name": "sw-youtube",
-  "private": "true",
+  "version": "0.5.0",
   "dependencies": {
     "lodash": "^4.6.1",
     "ngCordova": "^0.1.27-alpha",
