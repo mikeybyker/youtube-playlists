@@ -4,7 +4,6 @@
     angular
         .module('sinisterwaltz.youtube')
         .controller('PlaylistsController', PlaylistsController)
-        .controller('MenuController', MenuController)
         .controller('CreatePlaylistController', CreatePlaylistController);
 
     function PlaylistsController(auth, $state, store, YoutubeService, $log, Utils, YouTubeUtils) {
@@ -19,15 +18,23 @@
         vm.playlists = [];
         vm.user = auth.profile.name;
 
-        getPlaylists();
+        if(auth.profile){
+            getPlaylists();
+        } else {
+            $state.go('login');
+        }
 
         function getPlaylists(){
+            Utils.showBusy();
             YoutubeService.getAllPlaylists()
                 .then(function(response){
                     vm.playlists = response;
                 }, function(reason){
                     $log.info('getAllPlaylists Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
@@ -38,7 +45,7 @@
 
         function addPlaylist(){
             var params = {
-                    templateUrl: 'js/youtube/create.html',
+                    templateUrl: 'js/playlists/create.html',
                     controller: 'CreatePlaylistController as vm',
                     modalClass: 'medium red'
                 };
@@ -52,6 +59,7 @@
         }
 
         function createPlaylist(config){
+            Utils.showBusy();
             YoutubeService.createPlaylist(config.playlist, config.status)
                 .then(function(response){
                     Utils.showSuccess('Yup, created that!', 'Sweet');
@@ -59,6 +67,9 @@
                 }, function(reason){
                     $log.info('createPlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
@@ -77,13 +88,17 @@
         }
 
         function deletePlaylist(playlistId){
+            Utils.showBusy();
             YoutubeService.deletePlaylistUpdate({id: playlistId})
                 .then(function(response){
                     Utils.showSuccess('You the boss, it is no more!', 'Gulp');
-                    vm.playlists = response; // maybe happens too quick for youtube api...but still shoes deleted.
+                    vm.playlists = response; // maybe happens too quick for youtube api...but still shows deleted.
                 }, function(reason){
                     $log.info('deletePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
@@ -124,21 +139,10 @@
 
     }
 
-    // Side Menu
-    function MenuController(Utils) {
-        var vm = this;
-        vm.logout = logout;
-
-        function logout()
-        {
-            Utils.logout();
-        };
-    }
-
     // addPlaylist modal controller
     function CreatePlaylistController($scope, $log, YouTubeUtils) {
         var vm = this;
-        
+
         vm.reset = reset;
         vm.update = update;
         vm.changeStatus = changeStatus;

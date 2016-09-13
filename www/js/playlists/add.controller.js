@@ -32,6 +32,7 @@
                     q : q,
                     maxResults: 6
                 };
+            Utils.showBusy();
             YoutubeService.search(options)
                 .then(function(response){
                     // $log.info('search  :::', response);
@@ -39,6 +40,9 @@
                 }, function(reason){
                     $log.info('search Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 

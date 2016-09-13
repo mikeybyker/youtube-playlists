@@ -35,28 +35,6 @@
      return res.status(200).json({data: result});
    });
  });
-
-// Yeah, temp only! Send in (in body) type of request?
-app.post('/del_ext_api', function (req, res) {
-   if (!req.headers['authorization']){ return res.status(401).json({ error: 'unauthorized'}); }
-   const context = req.webtaskContext;
-   const token = req.headers['authorization'].split(' ')[1];
-   const reqBody = req.webtaskContext.body;
-   const reqQuery = req.query;
-   if (!reqBody) {
-     return res.status(400).json({error: 'api_url is required'});
-   }
-   async.waterfall([
-     async.apply(verifyJWT, context, reqBody, reqQuery, token),
-     getAccessToken,
-     getUserProfile,
-     delExtIDPApi
-   ], function (err, result) {
-     if (err) return res.status(400).json({error: err});
-     return res.status(200).json({data: result});
-   });
- });
-
 /*
 * Verify that the user id_token is signed by the correct Auth0 client
 */
@@ -140,7 +118,7 @@ function callExtIDPApi (context, reqBody, reqQuery, user, cb) {
           json : true,
           headers: {Authorization: 'Bearer ' + idp_access_token}
         };
-    if(options.method === 'POST'){
+    if(options.method === 'POST' || options.method === 'PUT'){
         options.body = getBody(reqBody, idp_access_token);
     }
     request(options, function (error, response, body) {
@@ -175,42 +153,6 @@ function getBody(reqBody, idp_access_token){
 }
 
 /*
-* Call the External API with the IDP access token to return data back to the client.
-*/
-function delExtIDPApi (context, reqBody, reqQuery, user, cb) {
-  let idp_access_token = null;
-  const api = reqBody.api_url;
-  const provider = user.user_id.split('|')[0];
-  /*
-  * Checks for the identities array in the user profile
-  * Matches the access_token with the user_id provider/strategy
-  */
-  if (user && user.identities) {
-    for (var i = 0; i < user.identities.length; i++) {
-      if (user.identities[i].access_token && user.identities[i].provider === provider) {
-        idp_access_token = user.identities[i].access_token;
-        i = user.identities.length;
-      }
-    }
-  }
-  if (idp_access_token) {
-    // Added qs...
-    var qs = getQSParams(reqQuery, idp_access_token),
-        options = {
-          method: 'DELETE',
-          url: api,
-          qs: qs,
-          headers: {Authorization: 'Bearer ' + idp_access_token}
-        };
-    request(options, function (error, response) {
-      if (error) cb(error);
-      cb(null, {success:true});
-    });
-  } else {
-    cb({error: 'No Access Token Available'});
-  }
-};
-/*
 * Pick up any additional options sent in the request parameters
 */
 function getQSParams(reqQuery, idp_access_token){
@@ -242,7 +184,7 @@ module.exports = Webtask.fromExpress(app);
     (need client id & secret from the non interactive client,
     plus the secret from the app/client that needs the 3rd party access)
 
-    wt create ext_idp_webtask.js
+    wt create youtube_idp_webtask.js
         -s CLIENT_ID=YOUR_NON_INTERACTIVE_AUTH0_CLIENT_ID
         -s CLIENT_SECRET=YOUR_NON_INTERACTIVE_AUTHO_CLIENT_SECRET
         -s ACCOUNT_NAME=YOUR_AUTH0_TENANT_NAME    (e.g. yourdomain.eu)
@@ -250,28 +192,3 @@ module.exports = Webtask.fromExpress(app);
 
     You will get a webtask url returned, which you can use in the app.
 */
-
-/*
-    if(options.method === 'POST'){
-        options.body = getBody(reqBody, idp_access_token);
-        // options.json = true;
-       json - sets body to JSON representation of value and adds Content-type: application/json header. Additionally, parses the response body as JSON.
-
-        i.e. don't need to return JSON.parse(body) : which is an arse cos it should always be one or the other!
-        Actually - can always use json :-)
-
-        // options.url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet'
-        request(options, function (error, response, body) {
-          // if (error) cb(error);
-          if (error) cb(Object.assign({sent:options.body}, error));
-          cb(null, body);
-        });
-    } else {
-        request(options, function (error, response, body) {
-          if (error) cb(error);
-          // if (error) cb(Object.assign({sent:options.body}, error));
-          // cb(null, body ? JSON.parse(body) : {});
-          cb(null, body || {});
-        });
-    }
-    */

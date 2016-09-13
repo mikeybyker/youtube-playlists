@@ -18,7 +18,7 @@
         $stateProvider
             .state('login',{
                 url: '/login',
-                templateUrl: 'templates/login.html',
+                templateUrl: 'js/login/login.html',
                 controller: 'LoginController',
                 controllerAs: 'vm'
             })
@@ -26,19 +26,19 @@
            .state('playlist', {
                 url: '',
                 abstract: true,
-                templateUrl: 'templates/double.html'
+                templateUrl: 'double.html'
             })
 
             .state('playlist.list',{
                 url: '/playlist',
                 views: {
                     'appContent' :{
-                        templateUrl: 'templates/playlist.html',
+                        templateUrl: 'js/playlists/playlist.html',
                         controller: 'PlaylistsController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'templates/menu.html',
+                        templateUrl: 'js/menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }
@@ -52,12 +52,12 @@
                 url: '/playlist/:playlistId',
                 views: {
                     'appContent' :{
-                        templateUrl: 'templates/edit.html',
+                        templateUrl: 'js/playlists/edit.html',
                         controller: 'EditController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'templates/menu.html',
+                        templateUrl: 'js/menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }
@@ -71,12 +71,12 @@
                 url: '/playlist/:playlistId/add',
                 views: {
                     'appContent' :{
-                        templateUrl: 'templates/add.html',
+                        templateUrl: 'js/playlists/add.html',
                         controller: 'AddController',
                         controllerAs: 'vm'
                     },
                     'appMenu' :{
-                        templateUrl: 'templates/menu.html',
+                        templateUrl: 'js/menu/menu.html',
                         controller: 'MenuController',
                         controllerAs: 'vm'
                     }
@@ -86,14 +86,17 @@
                 }
             })
 
-            $urlRouterProvider.when('', '/playlist');
-            $urlRouterProvider.otherwise('/playlist'); // hmmm?
+        // $urlRouterProvider.when('', '/playlist');
+        // $urlRouterProvider.otherwise('/playlist'); // hmmm?
+        // https://github.com/angular-ui/ui-router/issues/2183
+        // Fix Error: [$rootScope:infdig] 10 $digest() iterations reached. Aborting!
+        $urlRouterProvider.otherwise(function($injector, $location){
+            var $state = $injector.get('$state');
+            $state.go('playlist.list');
+        });
 
-
-        // Enable log
         $logProvider.debugEnabled(true);
 
-        // Set toastr config
         toastrConfig.allowHtml = true;
         toastrConfig.timeOut = 3000;
         toastrConfig.positionClass = 'toast-top-center';
@@ -117,28 +120,19 @@
             $state.go('login');
         });
 
-        // This is adding the AUTH0 JWT
+        // Adding the AUTH0 JWT to headers
         jwtInterceptorProvider.tokenGetter = function(store,  $log) {
-            // var access_token = store.get('access_token');
             var token = store.get('token');
-            // $log.info('jwtInterceptorProvider : token : ', token);
             if (!token) {
                 return null;
             }
-            // return access_token; // can't check for expired (not a JWT)
             return token; // CAN check for expired (IS a JWT)
         }
 
         $httpProvider.interceptors.push('jwtInterceptor');
 
-        // https://github.com/auth0/angular-jwt
-        // says add tokenGetter here : but above is getting called - but not adding it :-|
         jwtOptionsProvider.config({
           whiteListedDomains: ['webtask.it.auth0.com', 'googleapis.com', 'localhost']
-          // tokenGetter: ['store', function(store) {
-          //   // Says this is the way - it isn't! Above still is!
-          //   return store.get('token');
-          // }]
         });
 
     })
@@ -150,8 +144,6 @@
         $rootScope.$on('$stateChangeStart', stateChangeStart);
 
         function stateChangeStart(event, toState, toParams, fromState, fromParams, options){
-            // $log.info('stateChangeStart > toState ::: ', toState);
-            // $log.info('stateChangeStart > fromState ::: ', fromState);
             var token = store.get('token');
             if (token) {
                 if (!jwtHelper.isTokenExpired(token)) {
@@ -163,7 +155,6 @@
                     // as already handled by route protection (requiresLogin: true)
                 }
             }
-
         };
 
         $ionicPlatform.ready(function() {

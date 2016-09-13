@@ -3,7 +3,7 @@
 
     angular
         .module('sinisterwaltz.youtube')
-        .factory('YoutubeService', function($http, $q, store, $log, webtask, PRIVACY){
+        .factory('YoutubeService', function($http, $q, store, $log, webtask){
 
             var BASE_API = 'https://www.googleapis.com/youtube/v3/',
                 USE_JSONP = false,
@@ -44,9 +44,9 @@
                 // mix default params and token with options...
                 // Use the jwtInterceptor to add in auth headers (see app.js config)
                 params = angular.extend(options || {}, { webtask_no_cache: 1}, props.params);
-if(props.operation === 'GET' && USE_JSONP){
-    params.callback = 'JSON_CALLBACK';
-}
+                if(props.operation === 'GET' && USE_JSONP){
+                    params.callback = 'JSON_CALLBACK';
+                }
                 return params;
             }
 
@@ -54,38 +54,45 @@ if(props.operation === 'GET' && USE_JSONP){
                 var props = REQUESTS.properties[operation],
                     params = getParams(options, props),
                     url = getEndPoint(props.path);
-                return {url: url, params: params};
+                return {url: url, params: params, method: props.operation};
+            }
+
+            function checkData(response){
+                if(!response.data || !response.data.data){
+                    return null;
+                }
+                return response.data.data;
+            }
+
+            function loadData(config, reqBody){
+                var data = angular.extend({api_url: config.url, method: config.method}, reqBody || {});
+                return  $http({
+                            method: 'POST',
+                            url: webtask.api,
+                            data: data,
+                            params: config.params
+                        });
             }
 
             // Operations...
-// Done
+
             function search(options){
                 var config = getConfig(REQUESTS.SEARCH, options);
                 if(!config.params){
                     return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    data: {api_url: config.url},
-                    params: config.params
-                })
-                .then(function(response){
-                    var data = checkData(response);
-                    if(!data){
-                        return $q.reject('Data returned is just wrong. That is all.');
-                    }
-                    if(data.error){
-                        return reject({status:data.error.code, statusText: data.error.message});
-                    }
-                    return data.items || [];
-                });
 
-                // return $http({
-                //     method: USE_JSONP ? 'JSONP' : 'GET',
-                //     url: config.url,
-                //     params: config.params
-                // })
+                return loadData(config)
+                    .then(function(response){
+                        var data = checkData(response);
+                        if(!data){
+                            return $q.reject('Data returned is just wrong. That is all.');
+                        }
+                        if(data.error){
+                            return reject({status:data.error.code, statusText: data.error.message});
+                        }
+                        return data.items || [];
+                    });
             }
 
             function createPlaylist(playlist, status, options){
@@ -97,13 +104,17 @@ if(props.operation === 'GET' && USE_JSONP){
                         description: playlist.description || 'Sample playlist for Data API',
                         tags: ['sinister-waltz']
                     };
-                return $http.post(config.url, {snippet: snippet, status: status}, {params: config.params})
-                        .then(function(result){
-                            return getAllPlaylists();
-                        }, function(reason){
-                            $log.info('Error >  createPlaylist : ', reason);
-                            return reject({status:500, statusText:'Could not create it, sorry'});
-                        });
+                if(!config.params){
+                    return reject({status:500, statusText:'No bearer token'});
+                }
+
+                return loadData(config, {snippet: snippet, status: status})
+                    .then(function(result){
+                        return getAllPlaylists();
+                    }, function(reason){
+                        $log.info('Error >  createPlaylist : ', reason);
+                        return reject({status:500, statusText:'Could not create it, sorry'});
+                    });
             }
 
             // status (if sent in) must contain privacyStatus > {privacyStatus: privacyStatus}
@@ -117,6 +128,9 @@ if(props.operation === 'GET' && USE_JSONP){
                         title: playlist.title,
                         tags: ['sinister-waltz']
                     };
+                if(!config.params){
+                    return reject({status:500, statusText:'No bearer token'});
+                }
                 if(playlist.description){
                     snippet.description = playlist.description;
                 }
@@ -124,54 +138,47 @@ if(props.operation === 'GET' && USE_JSONP){
                 if(status){
                     data.status = status;
                 }
-                return $http.put(config.url, data, {params: config.params})
-                        .then(function(result){
-                            var updatedSnippet = result.data.snippet,
-                                updatedStatus = result.data.status;
-                            if(!updatedSnippet || !updatedStatus){
-                                return reject({status:500, statusText:'Could not update it, sorry'});
-                            }
-                            return {privacyStatus: updatedStatus.privacyStatus, title: updatedSnippet.title, description: updatedSnippet.description};
-                        }, function(reason){
-                            $log.info('Error >  updatePlaylist : ', reason);
+
+                return loadData(config, data)
+                    .then(function(response){
+                        var data = checkData(response);
+                        if(!data){
+                            return $q.reject('Data returned is just wrong. That is all.');
+                        }
+                        var updatedSnippet = data.snippet,
+                            updatedStatus = data.status;
+                        if(!updatedSnippet || !updatedStatus){
                             return reject({status:500, statusText:'Could not update it, sorry'});
-                        });
+                        }
+                        return {privacyStatus: updatedStatus.privacyStatus, title: updatedSnippet.title, description: updatedSnippet.description};
+                    }, function(reason){
+                        $log.info('Error >  updatePlaylist : ', reason);
+                        return reject({status:500, statusText:'Could not update it, sorry'});
+                    });
             }
-// Done
+
             function getPlaylist(options){
                 assert(options.id, 'getPlaylist requires id');
                 var config = getConfig(REQUESTS.GET_PLAYLIST, options);
                 if(!config.params){
                     return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    data: {api_url: config.url},
-                    params: config.params
-                })
-                .then(function(response){
-                    var data = checkData(response);
-                    if(!data){
-                        return $q.reject('Data returned is just wrong. That is all.');
-                    }
-                    if(data.error){
-                        return reject({status:response.data.error.code, statusText: response.data.error.message});
-                    }
-                    if(data.items.length !== 1){
-                        return reject({status:401, statusText: 'Problem trying to get this playlist...'});
-                    }
-                    return data.items[0];
-                });
+                return loadData(config)
+                    .then(function(response){
+                        var data = checkData(response);
+                        if(!data){
+                            return $q.reject('Data returned is just wrong. That is all.');
+                        }
+                        if(data.error){
+                            return reject({status:response.data.error.code, statusText: response.data.error.message});
+                        }
+                        if(data.items.length !== 1){
+                            return reject({status:401, statusText: 'Problem trying to get this playlist...'});
+                        }
+                        return data.items[0];
+                    });
             }
 
-function checkData(response){
-    if(!response.data || !response.data.data){
-        return null;
-    }
-    return response.data.data;
-}
-// Done
             function getAllPlaylists(options){
                 var config = getConfig(REQUESTS.GET_PLAYLISTS, options);
 
@@ -179,62 +186,50 @@ function checkData(response){
                     return reject({status:500, statusText:'No bearer token'});
                 }
 
-                // method: USE_JSONP ? 'JSONP' : 'GET',
-
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    // headers: headers, // interceptor adding the bearer
-                    data: {api_url: config.url}, // message body needs the api_url
-                    params: config.params
-                })
-                .then(function(response){
-                    var data = checkData(response);
-                    if(!data){
-                        return $q.reject('Data returned is just wrong. That is all.');
-                    }
-                    if(data.error){
-                        return reject({status:data.error.code, statusText: data.error.message});
-                    }
-                    // @todo: Work out how to get YouTube to only send playlists tagged with sinister-waltz!
-                    // Until then, do it manually...
-                    return data.items.filter(function(playlist){
-                        return playlist.snippet.tags &&
-                               playlist.snippet.tags.indexOf('sinister-waltz') !== -1;
+                return loadData(config)
+                    .then(function(response){
+                        var data = checkData(response);
+                        if(!data){
+                            return $q.reject('Data returned is just wrong. That is all.');
+                        }
+                        if(data.error){
+                            return reject({status:data.error.code, statusText: data.error.message});
+                        }
+                        // @todo: Work out how to get YouTube to only send playlists tagged with sinister-waltz!
+                        // Until then, do it manually...
+                        return data.items.filter(function(playlist){
+                            return playlist.snippet.tags &&
+                                   playlist.snippet.tags.indexOf('sinister-waltz') !== -1;
+                        });
                     });
-                });
             }
-// Done
+
             function getPlaylistItems(options){
                 assert(options.playlistId);
                 var config = getConfig(REQUESTS.GET_PLAYLIST_ITEMS, options);
                 if(!config.params){
                     return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    data: {api_url: config.url}, // message body needs the api_url
-                    params: config.params
-                })
-                .then(function(response){
-                    var data = checkData(response);
-                    if(!data){
-                        return $q.reject('Data returned is just wrong. That is all.');
-                    }
-                    if(data.error){
-                        return reject({status:response.data.error.code, statusText: response.data.error.message});
-                    }
-                    return data.items
-                });
+                return loadData(config)
+                    .then(function(response){
+                        var data = checkData(response);
+                        if(!data){
+                            return $q.reject('Data returned is just wrong. That is all.');
+                        }
+                        if(data.error){
+                            return reject({status:response.data.error.code, statusText: response.data.error.message});
+                        }
+                        return data.items
+                    });
             }
+
             function deletePlaylist(options){
                 assert(options.id, 'deletePlaylist requires id');
                 var config = getConfig(REQUESTS.DELETE_PLAYLIST, options);
                 if(!config.params){
-                    return reject({status:500, statusText:'No access token'});
+                    return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http.delete(config.url, {params: config.params});
+                return loadData(config)
             }
 
             function deletePlaylistUpdate(options){
@@ -245,8 +240,6 @@ function checkData(response){
                         });
             }
 
-
-// done
             function addPlaylistItem(playlistId, videoId, options){
                 var config = getConfig(REQUESTS.ADD_PLAYLIST_ITEMS, options),
                     snippet = {
@@ -259,12 +252,7 @@ function checkData(response){
                 if(!config.params){
                     return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    data: {api_url: config.url, snippet: snippet, method: 'POST'},
-                    params: config.params
-                });
+                return loadData(config, {snippet: snippet});
             }
 
             /**
@@ -284,20 +272,10 @@ function checkData(response){
                 if(!config.params){
                     return reject({status:500, statusText:'No bearer token'});
                 }
-                return $http({
-                    method: 'POST',
-                    url: webtask.api,
-                    data: {api_url: config.url, method: 'DELETE'}, // message body needs the api_url
-                    params: config.params
-                })
+                return loadData(config)
                     .then(function(response){
                         return getPlaylistItems({playlistId: options.playlistId, maxResults: 10});
                     });
-
-                // return $http.delete(config.url, {params: config.params})
-                //         .then(function(response){
-                //             return getPlaylistItems({playlistId: options.playlistId, maxResults: 10});
-                //         });
             }
 
             function reject(reason){

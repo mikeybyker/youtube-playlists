@@ -34,7 +34,8 @@
             store.set('profile', profile);
             store.set('token', token);
             store.set('refreshToken', refreshToken);
+            // No more! Auth0 no longer send access_token in profile.identities
             // store.set('access_token', profile.identities[0].access_token);
-        }
+        };
     }
 }());

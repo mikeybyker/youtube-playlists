@@ -44,6 +44,7 @@
         }
 
         function init(playlistId){
+            Utils.showBusy();
             YoutubeService.getPlaylist({id:playlistId})
                 .then(function(response){
                     vm.playlist = YouTubeUtils.updatePlaylist(response);
@@ -56,6 +57,9 @@
                 }, function(reason){
                     $log.info('getPlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
@@ -82,29 +86,18 @@
 
         function changeStatus(){
             var newStatus = YouTubeUtils.swapPrivacy(vm.status);
+            Utils.showBusy();
             YoutubeService.updatePlaylist(vm.playlist, newStatus)
                 .then(function(response){
                     vm.status.privacyStatus = response.privacyStatus;
                 }, function(reason){
                     $log.info('updatePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
-
-        /*
-        // eg. for changing title
-        function changeTitle(newTitle){
-            var copied = angular.copy(vm.playlist);
-            copied.title = newTitle; // probably from an input etc.
-            YoutubeService.updatePlaylist(copied, null)
-                .then(function(response){
-                    vm.playlist.title = response.title;
-                }, function(reason){
-                    $log.info('updatePlaylist Error :(', reason);
-                    Utils.showError(reason, 'Small Problem...');
-                });
-        }
-        */
 
         function showActions(playlist) {
             var buttonActions = function actionSheetCallback(index, button){
@@ -139,6 +132,7 @@
         }
 
         function deleteVideo(videoId, index){
+            Utils.showBusy();
             YoutubeService
                 .deletePlaylistItem({playlistId:playlistId, id: videoId})
                 .then(function(response){
@@ -150,11 +144,14 @@
                             h = result[0].offsetHeight;
                         if(result && h){
                             $ionicScrollDelegate.scrollBy(0, -h, true);
-                        }                        
-                    }                    
+                        }
+                    }
                 }, function(reason){
                     $log.info('deleteVideo Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
@@ -192,16 +189,36 @@
         }
 
         function deletePlaylist(playlistId){
+            Utils.showBusy();
             YoutubeService.deletePlaylist({id: playlistId})
                 .then(function(response){
                     Utils.showSuccess('You the boss, it is no more!', 'Gulp');
+                    Utils.hideBusy();
                     $state.go('playlist.list');
                 }, function(reason){
                     $log.info('deletePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
+                })
+                .finally(function(){
+                    Utils.hideBusy();
                 });
         }
 
     }
 
 }());
+
+/*
+// eg. for changing title
+function changeTitle(newTitle){
+    var copied = angular.copy(vm.playlist);
+    copied.title = newTitle; // probably from an input etc.
+    YoutubeService.updatePlaylist(copied, null)
+        .then(function(response){
+            vm.playlist.title = response.title;
+        }, function(reason){
+            $log.info('updatePlaylist Error :(', reason);
+            Utils.showError(reason, 'Small Problem...');
+        });
+}
+*/
