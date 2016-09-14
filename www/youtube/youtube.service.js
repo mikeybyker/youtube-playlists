@@ -170,7 +170,7 @@
                             return $q.reject('Data returned is just wrong. That is all.');
                         }
                         if(data.error){
-                            return reject({status:response.data.error.code, statusText: response.data.error.message});
+                            return reject({status:data.error.code, statusText: data.error.message});
                         }
                         if(data.items.length !== 1){
                             return reject({status:401, statusText: 'Problem trying to get this playlist...'});
@@ -217,7 +217,7 @@
                             return $q.reject('Data returned is just wrong. That is all.');
                         }
                         if(data.error){
-                            return reject({status:response.data.error.code, statusText: response.data.error.message});
+                            return reject({status:data.error.code, statusText: data.error.message});
                         }
                         return data.items
                     });

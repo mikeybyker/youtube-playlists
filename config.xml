@@ -11,12 +11,14 @@
     <access origin="*" />
     <allow-navigation href="*://*.sinisterwaltz.com/*" />
     <allow-navigation href="*://*.sinisterwaltz.eu.auth0.com/*" />
+    <allow-navigation href="*://*.webtask.it.auth0.com/*" />
     <allow-navigation href="*://*.youtube.com/*" />
     <allow-navigation href="*://*.google.com/*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
     <allow-intent href="*.sinisterwaltz.com" />
     <allow-intent href="*.sinisterwaltz.eu.auth0.com" />
+    <allow-intent href="*.webtask.it.auth0.com" />
     <preference name="webviewbounce" value="false" />
     <preference name="UIWebViewBounce" value="false" />
     <preference name="DisallowOverscroll" value="true" />

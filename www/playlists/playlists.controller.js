@@ -47,7 +47,7 @@
             var params = {
                     templateUrl: 'playlists/create.html',
                     controller: 'CreatePlaylistController as vm',
-                    modalClass: 'medium'
+                    modalClass: 'large large50'
                 };
             YouTubeUtils.openModal(params)
                 .closed.then(function(config) {

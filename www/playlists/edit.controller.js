@@ -11,13 +11,12 @@
             videoParams = {controls: 1, modestbranding: 1};
 
         vm.removeVideo = removeVideo;
-        vm.changeStatus = changeStatus;
         vm.playVideo = playVideo;
         vm.showActions = showActions;
         vm.playlist = {};
         vm.status =  YouTubeUtils.getInitialStatus();
         vm.playlistItems = [];
-        vm.user = auth.profile.name;
+        vm.user = auth.profile && auth.profile.name;
 
         if(!playlistId){
             $state.go('playlist');
