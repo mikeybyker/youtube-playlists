@@ -6,17 +6,17 @@
         .controller('EditController', EditController);
 
     function EditController($state, $stateParams, $log, $ionicScrollDelegate, auth, store, YoutubeService, Popeye, Utils, YouTubeUtils) {
-        var vm = this,
-            playlistId = vm.playlistId = $stateParams.playlistId,
+        var $ctrl = this,
+            playlistId = $ctrl.playlistId = $stateParams.playlistId,
             videoParams = {controls: 1, modestbranding: 1};
 
-        vm.removeVideo = removeVideo;
-        vm.playVideo = playVideo;
-        vm.showActions = showActions;
-        vm.playlist = {};
-        vm.status =  YouTubeUtils.getInitialStatus();
-        vm.playlistItems = [];
-        vm.user = auth.profile && auth.profile.name;
+        $ctrl.removeVideo = removeVideo;
+        $ctrl.playVideo = playVideo;
+        $ctrl.showActions = showActions;
+        $ctrl.playlist = {};
+        $ctrl.status =  YouTubeUtils.getInitialStatus();
+        $ctrl.playlistItems = [];
+        $ctrl.user = auth.profile && auth.profile.name;
 
         if(!playlistId){
             $state.go('playlist');
@@ -32,7 +32,7 @@
             Utils.showBusy();
             YoutubeService.addAndUpdate(playlistId, id)
                 .then(function(response){
-                    vm.playlistItems = response;
+                    $ctrl.playlistItems = response;
                 }, function(reason){
                     $log.info('addAndUpdate Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -46,8 +46,8 @@
             Utils.showBusy();
             YoutubeService.getPlaylist({id:playlistId})
                 .then(function(response){
-                    vm.playlist = YouTubeUtils.updatePlaylist(response);
-                    vm.status = YouTubeUtils.updateStatus(response.status);
+                    $ctrl.playlist = YouTubeUtils.updatePlaylist(response);
+                    $ctrl.status = YouTubeUtils.updateStatus(response.status);
                     return response.id; // Should(!) be the same as playlistId!
                 })
                 .then(function(receivedPlaylistId){
@@ -69,7 +69,7 @@
             };
             YoutubeService.getPlaylistItems(options)
                 .then(function(response){
-                    vm.playlistItems = response;
+                    $ctrl.playlistItems = response;
                 }, function(reason){
                     $log.info('getPlaylistItems Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -84,11 +84,11 @@
         }
 
         function changeStatus(){
-            var newStatus = YouTubeUtils.swapPrivacy(vm.status);
+            var newStatus = YouTubeUtils.swapPrivacy($ctrl.status);
             Utils.showBusy();
-            YoutubeService.updatePlaylist(vm.playlist, newStatus)
+            YoutubeService.updatePlaylist($ctrl.playlist, newStatus)
                 .then(function(response){
-                    vm.status.privacyStatus = response.privacyStatus;
+                    $ctrl.status.privacyStatus = response.privacyStatus;
                 }, function(reason){
                     $log.info('updatePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -102,10 +102,10 @@
             var buttonActions = function actionSheetCallback(index, button){
                     switch(button.id){
                         case 'add' :
-                            $state.go('playlist.add', {playlistId: vm.playlistId});
+                            $state.go('playlist.add', {playlistId: $ctrl.playlistId});
                             break;
                         case 'share' :
-                            YouTubeUtils.share(vm.playlist.id);
+                            YouTubeUtils.share($ctrl.playlist.id);
                             break;
                         case 'toggle' :
                             changeStatus();
@@ -114,10 +114,10 @@
                     return true;
                 },
                 destructiveActions = function(index) {
-                    removePlaylist(vm.playlist.id);
+                    removePlaylist($ctrl.playlist.id);
                     return true;
                 };
-            YouTubeUtils.showEditActions(vm.playlist, vm.status, buttonActions, destructiveActions);
+            YouTubeUtils.showEditActions($ctrl.playlist, $ctrl.status, buttonActions, destructiveActions);
         }
 
         function removeVideo(video, index){
@@ -135,10 +135,10 @@
             YoutubeService
                 .deletePlaylistItem({playlistId:playlistId, id: videoId})
                 .then(function(response){
-                    vm.playlistItems = response;
+                    $ctrl.playlistItems = response;
                     Utils.showSuccess('Righto, it has gone!', 'Tada');
                     // Not very good thing to do, but brings the list back in view if the last item was deleted.
-                    if(index === vm.playlistItems.length){
+                    if(index === $ctrl.playlistItems.length){
                         var result = document.getElementsByClassName('item'),
                             h = result[0].offsetHeight;
                         if(result && h){
@@ -166,7 +166,7 @@
                 },
                 params = {
                     templateUrl: 'youtube/youtube.html',
-                    controller: 'YoutubeModalController as vm',
+                    controller: 'YoutubeModalController as $ctrl',
                     resolve: resolve,
                     modalClass: 'vlarge red'
                 };
@@ -212,11 +212,11 @@
 /*
 // eg. for changing title
 function changeTitle(newTitle){
-    var copied = angular.copy(vm.playlist);
+    var copied = angular.copy($ctrl.playlist);
     copied.title = newTitle; // probably from an input etc.
     YoutubeService.updatePlaylist(copied, null)
         .then(function(response){
-            vm.playlist.title = response.title;
+            $ctrl.playlist.title = response.title;
         }, function(reason){
             $log.info('updatePlaylist Error :(', reason);
             Utils.showError(reason, 'Small Problem...');

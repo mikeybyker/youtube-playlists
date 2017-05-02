@@ -5,23 +5,23 @@
                 <div class="list">
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Playlist Name</span>
-                        <input type="text" ng-model="vm.userlist.title" placeholder="Playlist Name" required>
+                        <input type="text" ng-model="$ctrl.userlist.title" placeholder="Playlist Name" required>
                     </label>
                     <label class="item item-input item-stacked-label">
                         <span class="input-label">Description</span>
-                        <input type="text" ng-model="vm.userlist.description" placeholder="(optional)">
+                        <input type="text" ng-model="$ctrl.userlist.description" placeholder="(optional)">
                     </label>
                     <div class="item item-toggle create-toggle">                    
-                        <span class="input-label">{{vm.status.privacyStatus | capitalize}}</span>
+                        <span class="input-label">{{$ctrl.status.privacyStatus | capitalize}}</span>
                         <label class="toggle toggle-dark">
-                            <input type="checkbox" ng-click="vm.changeStatus()">
+                            <input type="checkbox" ng-click="$ctrl.changeStatus()">
                             <div class="track">
                                 <div class="handle"></div>
                             </div>
                         </label>
                     </div>
                     <div class="">
-                        <button type="submit" class="button button-dark button-block" ng-disabled="!vm.userlist.title" ng-click="vm.update(vm.userlist)">Create</button>
+                        <button type="submit" class="button button-dark button-block" ng-disabled="!$ctrl.userlist.title" ng-click="$ctrl.update($ctrl.userlist)">Create</button>
                     </div>
                 </div>
 

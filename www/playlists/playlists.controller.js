@@ -7,16 +7,16 @@
         .controller('CreatePlaylistController', CreatePlaylistController);
 
     function PlaylistsController(auth, $state, store, YoutubeService, $log, Utils, YouTubeUtils) {
-        var vm = this;
+        var $ctrl = this;
 
-        vm.addPlaylist = addPlaylist;
-        vm.getPlaylists = getPlaylists;
-        vm.showActions = showActions;
-        vm.removePlaylist = removePlaylist;
-        vm.share = share;
+        $ctrl.addPlaylist = addPlaylist;
+        $ctrl.getPlaylists = getPlaylists;
+        $ctrl.showActions = showActions;
+        $ctrl.removePlaylist = removePlaylist;
+        $ctrl.share = share;
 
-        vm.playlists = [];
-        vm.user = auth.profile.name;
+        $ctrl.playlists = [];
+        $ctrl.user = auth.profile.name;
 
         if(auth.profile){
             getPlaylists();
@@ -28,7 +28,7 @@
             Utils.showBusy();
             YoutubeService.getAllPlaylists()
                 .then(function(response){
-                    vm.playlists = response;
+                    $ctrl.playlists = response;
                 }, function(reason){
                     $log.info('getAllPlaylists Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -46,7 +46,7 @@
         function addPlaylist(){
             var params = {
                     templateUrl: 'playlists/create.html',
-                    controller: 'CreatePlaylistController as vm',
+                    controller: 'CreatePlaylistController as $ctrl',
                     modalClass: 'large large50'
                 };
             YouTubeUtils.openModal(params)
@@ -63,7 +63,7 @@
             YoutubeService.createPlaylist(config.playlist, config.status)
                 .then(function(response){
                     Utils.showSuccess('Yup, created that!', 'Sweet');
-                    vm.playlists = response;
+                    $ctrl.playlists = response;
                 }, function(reason){
                     $log.info('createPlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -92,7 +92,7 @@
             YoutubeService.deletePlaylistUpdate({id: playlistId})
                 .then(function(response){
                     Utils.showSuccess('You the boss, it is no more!', 'Gulp');
-                    vm.playlists = response; // maybe happens too quick for youtube api...but still shows deleted.
+                    $ctrl.playlists = response; // maybe happens too quick for youtube api...but still shows deleted.
                 }, function(reason){
                     // $log.info('deletePlaylist Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -140,28 +140,28 @@
 
     // add Playlist modal controller
     function CreatePlaylistController($scope, $log, YouTubeUtils) {
-        var vm = this;
+        var $ctrl = this;
 
-        vm.reset = reset;
-        vm.update = update;
-        vm.changeStatus = changeStatus;
-        vm.status =  YouTubeUtils.getInitialStatus();
-        vm.master = {title:'', description:''};
+        $ctrl.reset = reset;
+        $ctrl.update = update;
+        $ctrl.changeStatus = changeStatus;
+        $ctrl.status =  YouTubeUtils.getInitialStatus();
+        $ctrl.master = {title:'', description:''};
 
         function reset(){
-            vm.userlist = angular.copy(vm.master);
+            $ctrl.userlist = angular.copy($ctrl.master);
         }
 
         function changeStatus(){
-            vm.status = YouTubeUtils.swapPrivacy(vm.status);
+            $ctrl.status = YouTubeUtils.swapPrivacy($ctrl.status);
         }
 
         function update(userlist){
-            vm.master = angular.copy(userlist);
-            $scope.$close({playlist: vm.master, status: vm.status});
+            $ctrl.master = angular.copy(userlist);
+            $scope.$close({playlist: $ctrl.master, status: $ctrl.status});
         }
 
-        vm.reset();
+        $ctrl.reset();
     }
 
 }());

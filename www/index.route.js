@@ -12,7 +12,7 @@
                 url: '/login',
                 templateUrl: 'login/login.html',
                 controller: 'LoginController',
-                controllerAs: 'vm'
+                controllerAs: '$ctrl'
             })
            .state('playlist', {
                 url: '',
@@ -25,12 +25,12 @@
                     'appContent' :{
                         templateUrl: 'playlists/playlist.html',
                         controller: 'PlaylistsController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     },
                     'appMenu' :{
                         templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     }
                 },
                 data: {
@@ -43,12 +43,12 @@
                     'appContent' :{
                         templateUrl: 'playlists/edit.html',
                         controller: 'EditController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     },
                     'appMenu' :{
                         templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     }
                 },
                 data: {
@@ -61,12 +61,12 @@
                     'appContent' :{
                         templateUrl: 'playlists/add.html',
                         controller: 'AddController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     },
                     'appMenu' :{
                         templateUrl: 'menu/menu.html',
                         controller: 'MenuController',
-                        controllerAs: 'vm'
+                        controllerAs: '$ctrl'
                     }
                 },
                 data: {

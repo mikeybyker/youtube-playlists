@@ -6,10 +6,10 @@
         .controller('LoginController', LoginController);
 
     function LoginController(auth, $state, store, $log, $rootScope) {
-        var vm = this;
+        var $ctrl = this;
 
-        vm.login = login;
-        vm.loggedIn = auth.isAuthenticated;
+        $ctrl.login = login;
+        $ctrl.loggedIn = auth.isAuthenticated;
 
         function login(){
             auth.signin({

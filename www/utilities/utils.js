@@ -21,7 +21,7 @@
         function confirmPopup(id){
             return Popeye.openModal({
                     templateUrl: 'utilities/confirm.html',
-                    controller: 'ConfirmModalController as vm',
+                    controller: 'ConfirmModalController as $ctrl',
                     modalClass: 'medium',
                     resolve: {
                         id: function() {
@@ -84,8 +84,8 @@
     }
 
     function ConfirmModalController($scope, $log, id) {
-        var vm = this;
-        vm.confirm = confirm;
+        var $ctrl = this;
+        $ctrl.confirm = confirm;
         function confirm(bool){
             $scope.$close({confirm: bool, id: id} );
         }

@@ -6,8 +6,8 @@
         .controller('MenuController', MenuController);
 
     function MenuController(Utils) {
-        var vm = this;
-        vm.Utils = Utils;
+        var $ctrl = this;
+        $ctrl.Utils = Utils;
     }
 
 }());

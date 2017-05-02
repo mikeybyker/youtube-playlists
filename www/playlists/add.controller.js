@@ -6,28 +6,28 @@
         .controller('AddController', AddController);
 
     function AddController($state, $stateParams, $log, YoutubeService, toastr, Popeye, Utils, YouTubeUtils) {
-        var vm = this,
-            playlistId = vm.playlistId = $stateParams.playlistId;
+        var $ctrl = this,
+            playlistId = $ctrl.playlistId = $stateParams.playlistId;
 
-        vm.reset = reset;
-        vm.update = update;
-        vm.select = select;
-        vm.playVideo = playVideo;
+        $ctrl.reset = reset;
+        $ctrl.update = update;
+        $ctrl.select = select;
+        $ctrl.playVideo = playVideo;
 
-        vm.master = {artist:'The Cure', track:'Close To Me'}; // {artist:'', track:''};
-        vm.results = [];
+        $ctrl.master = {artist:'The Cure', track:'Close To Me'}; // {artist:'', track:''};
+        $ctrl.results = [];
 
         if(!playlistId){
             $state.go('playlist');
         }
 
         function reset(){
-            vm.usersearch = angular.copy(vm.master);
+            $ctrl.usersearch = angular.copy($ctrl.master);
         }
 
         function update(usersearch){
-            vm.master = angular.copy(usersearch);
-            var q = vm.master.artist + ' ' + vm.master.track,
+            $ctrl.master = angular.copy(usersearch);
+            var q = $ctrl.master.artist + ' ' + $ctrl.master.track,
                 options = {
                     q : q,
                     maxResults: 6
@@ -36,7 +36,7 @@
             YoutubeService.search(options)
                 .then(function(response){
                     // $log.info('search  :::', response);
-                    vm.results = response;
+                    $ctrl.results = response;
                 }, function(reason){
                     $log.info('search Error :(', reason);
                     Utils.showError(reason, 'Small Problem...');
@@ -75,7 +75,7 @@
                 },
                 params = {
                     templateUrl: 'youtube/youtube.html',
-                    controller: 'YoutubeModalController as vm',
+                    controller: 'YoutubeModalController as $ctrl',
                     resolve: resolve,
                     modalClass: 'vlarge red'
                 };
@@ -85,7 +85,7 @@
                 });
         }
 
-        vm.reset();
+        $ctrl.reset();
     }
 
 }());

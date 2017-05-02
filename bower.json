@@ -7,7 +7,7 @@
     "angular-toastr": "~2.1.1",
     "auth0-angular": "^4.2.3",
     "a0-angular-storage": "^0.0.15",
-    "angular-jwt": "^0.1.0",
+    "angular-jwt": "^0.1.9",
     "angular-popeye": "^1.0.5",
     "auth0.js": "^7.1.0",
     "auth0-lock": "^9.2.1"
