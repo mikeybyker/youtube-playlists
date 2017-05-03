@@ -2,50 +2,43 @@
     'use strict';
 
     angular
-        .module('sw-youtube')
-        .config(config);
+      .module('sw-youtube')
+      .config(config);
 
-    function config($httpProvider, toastrConfig, authProvider, authconfig, jwtInterceptorProvider, jwtOptionsProvider, $logProvider) {
+    function config($locationProvider, $httpProvider, toastrConfig, auth0config, jwtInterceptorProvider, jwtOptionsProvider, $logProvider, lockProvider) {
 
-        $logProvider.debugEnabled(true);
+      $logProvider.debugEnabled(true);
 
-        toastrConfig.allowHtml = true;
-        toastrConfig.timeOut = 3000;
-        toastrConfig.positionClass = 'toast-top-center';
-        toastrConfig.preventDuplicates = true;
-        toastrConfig.progressBar = true;
+      toastrConfig.allowHtml = true;
+      toastrConfig.timeOut = 3000;
+      toastrConfig.positionClass = 'toast-top-center';
+      toastrConfig.preventDuplicates = true;
+      toastrConfig.progressBar = true;
 
-        // Auth
-        authProvider.init(authconfig);
 
-        authProvider.on('authenticated', function($state, $timeout, $log, auth) {
-            // This is after a refresh of the page
-            // If the user is still authenticated, you get this event
-            $timeout(function() {
-                if($state.current.name === 'login'){
-                    $state.go('playlist.list'); // Seems to do the trick...ish.
-                }
-            });
-        });
+      lockProvider.init(auth0config);
 
-        authProvider.on('logout', function($state) {
-            $state.go('login');
-        });
+      // Remove the ! from the hash so that auth0.js can properly parse it
+      $locationProvider.hashPrefix('');
 
-        // Adding the AUTH0 JWT to headers
-        jwtInterceptorProvider.tokenGetter = function(store,  $log) {
-            var token = store.get('token');
-            if (!token) {
-                return null;
-            }
-            return token;
+      jwtOptionsProvider.config({
+        tokenGetter: function () {
+          return localStorage.getItem('id_token');
+        },
+        unauthenticatedRedirectPath: '/login',
+        whiteListedDomains: ['webtask.it.auth0.com', 'googleapis.com', 'localhost']
+      });
+
+      // Auth0 JWT headers
+      jwtInterceptorProvider.tokenGetter = function() {
+        var token = localStorage.getItem('id_token');
+        if (!token) {
+            return null;
         }
+        return token;
+      }
 
-        $httpProvider.interceptors.push('jwtInterceptor');
-
-        jwtOptionsProvider.config({
-          whiteListedDomains: ['webtask.it.auth0.com', 'googleapis.com', 'localhost']
-        });
+      $httpProvider.interceptors.push('jwtInterceptor');
 
     }
 

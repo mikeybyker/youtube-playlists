@@ -1,26 +1,26 @@
 <ion-view class="red" cache-view="false">
-    <ion-nav-title>
-        {{$ctrl.playlist.title}}
-    </ion-nav-title>
-    <ion-nav-buttons side="right">
-        <button class="button button-icon ion-android-more-vertical" ng-click="$ctrl.showActions()"></button>
-    </ion-nav-buttons>
-    <ion-content>
-        
-        <ion-list show-delete="$ctrl.isEditMode" ng-cloak>
-            <ion-item ng-repeat="video in $ctrl.playlistItems" class="item-remove-animate">
+  <ion-nav-title>
+    {{$ctrl.playlist.title}}
+  </ion-nav-title>
+  <ion-nav-buttons side="right">
+    <button class="button button-icon ion-android-more-vertical" ng-click="$ctrl.showActions()"></button>
+  </ion-nav-buttons>
+  <ion-content>
 
-                <videocard video="video" remove-video="$ctrl.removeVideo(video, $index)" play-video="$ctrl.playVideo(video)"></videocard>
+    <ion-list show-delete="$ctrl.isEditMode" ng-cloak>
+      <ion-item ng-repeat="video in $ctrl.playlistItems" class="item-remove-animate">
 
-            </ion-item>
-        </ion-list>
+        <videocard video="video" remove-video="$ctrl.removeVideo(video, $index)" play-video="$ctrl.playVideo(video)"></videocard>
 
-    </ion-content>
-    <ion-footer-bar class="bar-assertive" align-title="center">
-        <a ui-sref="playlist.list" class="button button-icon ion-arrow-return-left"> Return</a>
-        <div class="title">
-           &nbsp;
-        </div>
-        <a ui-sref="playlist.add({playlistId:$ctrl.playlistId})" class="button button-icon ion-plus"> Add Track</a>
-    </ion-footer-bar>
+      </ion-item>
+    </ion-list>
+
+  </ion-content>
+  <ion-footer-bar class="bar-assertive" align-title="center">
+    <a ui-sref="playlist.list" class="button button-icon ion-arrow-return-left"> Return</a>
+    <div class="title">
+     &nbsp;
+    </div>
+   <a ui-sref="playlist.add({playlistId:$ctrl.playlistId})" class="button button-icon ion-plus"> Add Track</a>
+ </ion-footer-bar>
 </ion-view>

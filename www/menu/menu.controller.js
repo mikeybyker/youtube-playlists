@@ -5,9 +5,15 @@
         .module('sinisterwaltz.youtube')
         .controller('MenuController', MenuController);
 
-    function MenuController(Utils) {
-        var $ctrl = this;
-        $ctrl.Utils = Utils;
+    function MenuController($state, authService) {
+      var $ctrl = this;
+      $ctrl.logout = logout;
+
+      function logout(){
+        authService.logout().finally(function(){
+          $state.go('login');
+        });
+      }
     }
 
 }());

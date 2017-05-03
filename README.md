@@ -76,6 +76,6 @@ https://webtask.it.auth0.com/api/run/wt-you-gmail_com-0/youtube_idp_webtask/call
 ##### Add your webtask, plus [Auth0](https://auth0.com/) domain and clientID to **index.constants.js**
 
 ### Version
-0.5.0
+0.6.0
 
 Mike

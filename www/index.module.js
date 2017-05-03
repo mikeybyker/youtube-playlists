@@ -7,10 +7,9 @@
             'sinisterwaltz.youtube',
             'ngCordova',
             'toastr',
-            'auth0',
-            'angular-storage',
-            'angular-jwt',
-            'pathgather.popeye'
+            'pathgather.popeye',
+            'auth0.lock',
+            'angular-jwt'
         ]);
 
 }());

@@ -1,6 +1,6 @@
 {
   "name": "sw-youtube",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "sw-youtube: An Angular/Ionic/Cordova app to create, edit and share YouTube playlists.",
   "repository": {
     "type": "git",
