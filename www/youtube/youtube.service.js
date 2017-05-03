@@ -195,6 +195,7 @@
               if(data.error){
                 return reject({status:data.error.code, statusText: data.error.message});
               }
+
               // @todo: Work out how to get YouTube to only send playlists tagged with sinister-waltz!
               // Until then, do it manually...
               return data.items.filter(function(playlist){
