@@ -37,7 +37,7 @@
 
         function getParams(options, props){
           var params,
-            token = localStorage.getItem('id_token');;
+            token = localStorage.getItem('id_token');
           if(!token){
             return null;
           }
